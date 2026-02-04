@@ -28,6 +28,20 @@ Nazgul/
 | **Backend** | Spring Boot 3, Java 17, JPA, PostgreSQL |
 | **Design** | Threads + Notion 스타일 UI |
 
+## 📸 스크린샷
+
+<div align="center">
+  <img src="docs/images/nazgul-home.jpg" alt="홈" width="45%">
+  <img src="docs/images/nazgul-explore.png" alt="탐색" width="45%">
+</div>
+<div align="center">
+  <img src="docs/images/nazgul-hobbies.png" alt="취미" width="45%">
+  <img src="docs/images/nazgul-profile.png" alt="프로필" width="45%">
+</div>
+<div align="center">
+  <img src="docs/images/nazgul-login.png" alt="로그인" width="30%">
+</div>
+
 ## 주요 기능
 
 - 회원가입/로그인 (JWT 인증)
