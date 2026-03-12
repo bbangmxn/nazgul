@@ -6,6 +6,7 @@ import com.nazgul.optimization.domain.model.HobbyCard;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,8 +18,18 @@ public class OllamaHobbyRagSummaryAdapter implements HobbyRagSummaryPort {
 
     private final OllamaApiClient ollamaApiClient;
 
+    @Value("${app.rag.performance.fast-mode:false}")
+    private boolean fastMode;
+
+    @Value("${app.rag.performance.summary-enabled:true}")
+    private boolean summaryEnabled;
+
     @Override
     public String summarize(String query, Long hobbyId, List<HobbyCard> cards, List<ContentChunk> chunks) {
+        if (fastMode || !summaryEnabled) {
+            return fallbackSummary(query, cards, chunks);
+        }
+
         String prompt = """
                 너는 취미 기반 SNS의 RAG 검색 어시스턴트다.
                 아래 카드와 근거 청크만 사용해서 한국어로 짧고 정확하게 답해라.

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -16,8 +17,18 @@ public class OllamaHobbyRagRerankAdapter implements HobbyRagRerankPort {
 
     private final OllamaApiClient ollamaApiClient;
 
+    @Value("${app.rag.performance.fast-mode:false}")
+    private boolean fastMode;
+
+    @Value("${app.rag.performance.rerank-enabled:true}")
+    private boolean rerankEnabled;
+
     @Override
     public List<HobbyCard> rerankCards(String query, List<HobbyCard> candidates, int limit) {
+        if (fastMode || !rerankEnabled) {
+            return candidates == null ? List.of() : candidates.stream().limit(limit).toList();
+        }
+
         if (!StringUtils.hasText(query) || candidates == null || candidates.isEmpty()) {
             return candidates == null ? List.of() : candidates.stream().limit(limit).toList();
         }
@@ -42,6 +53,10 @@ public class OllamaHobbyRagRerankAdapter implements HobbyRagRerankPort {
 
     @Override
     public List<ContentChunk> rerankChunks(String query, List<ContentChunk> candidates, int limit) {
+        if (fastMode || !rerankEnabled) {
+            return candidates == null ? List.of() : candidates.stream().limit(limit).toList();
+        }
+
         if (!StringUtils.hasText(query) || candidates == null || candidates.isEmpty()) {
             return candidates == null ? List.of() : candidates.stream().limit(limit).toList();
         }

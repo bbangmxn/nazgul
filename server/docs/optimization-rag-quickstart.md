@@ -103,6 +103,34 @@ curl "http://localhost:8080/api/v1/optimization/rag/recommend?userId=1&hobbyId=1
 - `averageLatencyMs`
 - `items[]`
 
+## 6. 최근 로컬 테스트 결과
+
+기준 날짜: `2026-03-12`
+
+검색 예시:
+
+- query: `러닝 초보 루틴`
+- recommended post ids: `1002`, `1003`, `1001`
+- returned cards:
+  - `러닝화 선택 기준`
+  - `무릎 통증 줄이기`
+  - `러닝 입문 루틴`
+
+벤치마크 예시:
+
+- provider: `ollama`
+- chat model: `qwen3:8b`
+- embedding model: `nomic-embed-text:latest`
+- total latency: `181594 ms`
+- average latency: `60531.33 ms / query`
+
+해석:
+
+- 파이프라인은 정상 동작한다.
+- 단순 질의는 비교적 자연스럽게 맞는다.
+- 복합 질의 랭킹은 아직 불완전하다.
+- 현재 병목은 SQLite보다 로컬 Ollama 응답 시간에 가깝다.
+
 ## 현재 구현 범위
 
 - storage: SQLite 파일 DB

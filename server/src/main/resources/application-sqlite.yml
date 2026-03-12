@@ -32,6 +32,10 @@ app:
     worker-enabled: false
   rag:
     seed-enabled: true
+    performance:
+      fast-mode: false
+      rerank-enabled: true
+      summary-enabled: true
     ollama:
       enabled: true
       base-url: http://localhost:11434

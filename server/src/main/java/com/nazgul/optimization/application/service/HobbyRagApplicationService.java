@@ -73,6 +73,9 @@ public class HobbyRagApplicationService implements
     @Value("${app.rag.ollama.embedding-model:nomic-embed-text:latest}")
     private String embeddingModel;
 
+    @Value("${app.rag.performance.fast-mode:false}")
+    private boolean fastMode;
+
     @Override
     @Transactional
     public ContentChunk createChunk(CreateContentChunkCommand command) {
@@ -304,8 +307,8 @@ public class HobbyRagApplicationService implements
     ) {
         String query = normalizeQuery(rawQuery);
         long startedAt = System.currentTimeMillis();
-        int cardCandidateLimit = Math.max(limit * 3, 10);
-        int chunkCandidateLimit = Math.max(limit * 4, 12);
+        int cardCandidateLimit = fastMode ? Math.max(limit * 2, 6) : Math.max(limit * 3, 10);
+        int chunkCandidateLimit = fastMode ? Math.max(limit * 2, 6) : Math.max(limit * 4, 12);
 
         List<HobbyCard> keywordCards = hobbyCardStore.search(query, hobbyId, cardCandidateLimit);
         if (keywordCards.isEmpty()) {
