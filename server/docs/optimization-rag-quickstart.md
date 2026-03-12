@@ -103,7 +103,7 @@ curl "http://localhost:8080/api/v1/optimization/rag/recommend?userId=1&hobbyId=1
 - `averageLatencyMs`
 - `items[]`
 
-## 6. 최근 로컬 테스트 결과
+## 6. 초기 연구 관측값
 
 기준 날짜: `2026-03-12`
 
@@ -124,7 +124,7 @@ curl "http://localhost:8080/api/v1/optimization/rag/recommend?userId=1&hobbyId=1
 - total latency: `181594 ms`
 - average latency: `60531.33 ms / query`
 
-해석:
+연구 관찰:
 
 - 파이프라인은 정상 동작한다.
 - 단순 질의는 비교적 자연스럽게 맞는다.

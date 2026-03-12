@@ -52,7 +52,7 @@ Nazgul에 매핑하면 이렇게 정리됩니다.
 상세 요약:
 
 - [docs/library-rag-summary.md](docs/library-rag-summary.md)
-- [docs/local-rag-evaluation-report.md](docs/local-rag-evaluation-report.md)
+- [docs/rag-prototype-research-note.md](docs/rag-prototype-research-note.md)
 
 ## Current Modules
 
@@ -155,7 +155,7 @@ scripts\test-hobby-rag.cmd -HobbyId 10 -Benchmark -TimeoutSec 300
 - 결과가 잘 나온다고 바로 성능이 좋다는 뜻은 아닙니다.
 - 실제 비교를 하려면 더 많은 테스트 데이터와 query-label 세트가 필요합니다.
 
-## Latest Local Test Result
+## Early Research Snapshot
 
 기준 날짜: `2026-03-12`
 
@@ -180,15 +180,15 @@ scripts\test-hobby-rag.cmd -HobbyId 10 -Benchmark -TimeoutSec 300
 - total latency: `181594 ms`
 - average latency: `60531 ms / query`
 
-해석:
+현재 의미:
 
-- 단일 의도 질의인 `러닝화 추천`, `무릎 통증 줄이기`는 기대한 카드만 반환한다.
-- 복합 질의인 `러닝 초보 루틴`은 관련 카드를 찾지만, 이상적인 top1인 `러닝 입문 루틴`이 첫 번째가 아니다.
-- 따라서 현재 구조는 `작동 검증` 단계로는 충분하지만, `정량 성능 검증` 단계로 보기에는 아직 이르다.
+- 단일 의도 질의와 복합 질의 모두에서 `card -> chunk -> answer -> trace` 흐름은 관찰된다.
+- 다만 현재 데이터 규모와 평가 축이 충분하지 않아서, 이 수치를 곧바로 품질 결론으로 연결하기는 어렵다.
+- 따라서 이 결과는 `초기 연구용 관측값`으로 다루는 것이 맞다.
 
-사람이 읽기 쉬운 결과 해석 문서:
+연구 기록 문서:
 
-- [docs/local-rag-evaluation-report.md](docs/local-rag-evaluation-report.md)
+- [docs/rag-prototype-research-note.md](docs/rag-prototype-research-note.md)
 
 ## Endpoints
 
