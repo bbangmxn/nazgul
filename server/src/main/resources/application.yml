@@ -1,51 +1,102 @@
 spring:
   application:
     name: nazgul-server
-  
-  # H2 Database (개발용)
+
   datasource:
-    url: jdbc:h2:mem:nazgul;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  
+    url: ${SUPABASE_DB_URL:${DB_URL:jdbc:postgresql://localhost:5432/nazgul}}
+    username: ${SUPABASE_DB_USERNAME:${DB_USERNAME:nazgul}}
+    password: ${SUPABASE_DB_PASSWORD:${DB_PASSWORD:nazgul}}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
+      minimum-idle: ${DB_POOL_MIN_IDLE:2}
+      connection-timeout: ${DB_POOL_CONNECTION_TIMEOUT_MS:30000}
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: ${REDIS_TIMEOUT:2s}
+
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+    open-in-view: false
     show-sql: true
     properties:
       hibernate:
+        default_schema: ${SUPABASE_DB_SCHEMA:${DB_SCHEMA:public}}
         format_sql: true
+        jdbc:
+          time_zone: UTC
 
-# JWT 설정
-jwt:
-  secret: nazgul-hobby-matching-platform-secret-key-2024-very-long-secret
-  expiration: 86400000  # 24시간
+  flyway:
+    enabled: ${FLYWAY_ENABLED:true}
+    baseline-on-migrate: true
+    schemas: ${SUPABASE_DB_SCHEMA:${DB_SCHEMA:public}}
 
-# 서버 설정
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      chat:
+        options:
+          model: ${OPENAI_CHAT_MODEL:gpt-4.1-mini}
+      embedding:
+        options:
+          model: ${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: ${PGVECTOR_DIMENSIONS:1536}
+        distance-type: COSINE_DISTANCE
+        index-type: HNSW
+
+app:
+  optimization:
+    worker-enabled: ${OPTIMIZATION_WORKER_ENABLED:true}
+    worker-delay-ms: ${OPTIMIZATION_WORKER_DELAY_MS:30000}
+    lock-ttl-seconds: ${OPTIMIZATION_LOCK_TTL_SECONDS:300}
+    batch-size: ${OPTIMIZATION_BATCH_SIZE:5}
+    prompt-template: |
+      You are an operations research assistant.
+      Build a concise optimization plan for the following job.
+      Title: {{title}}
+      Objective: {{objective}}
+      Input summary: {{inputSummary}}
+      Input payload: {{inputPayload}}
+      Return:
+      1. Decision variables
+      2. Constraints
+      3. Objective function
+      4. Recommended solver strategy
+      5. Risks and missing data
+
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+info:
+  app:
+    name: Nazgul Server
+    modules: rag, optimization
 
 ---
 spring:
   config:
     activate:
       on-profile: prod
-  
-  datasource:
-    url: ${DATABASE_URL}
-    driver-class-name: org.postgresql.Driver
-  
+
   jpa:
-    hibernate:
-      ddl-auto: validate
     show-sql: false
-  
-  h2:
-    console:
-      enabled: false
