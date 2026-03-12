@@ -212,7 +212,6 @@ public class HobbyRagApplicationService implements
     }
 
     @Override
-    @Transactional(readOnly = true)
     public SearchHobbyRagResult search(SearchHobbyRagQuery query) {
         SearchExecution execution = executeSearch(
                 query.userId(),
@@ -234,7 +233,6 @@ public class HobbyRagApplicationService implements
     }
 
     @Override
-    @Transactional(readOnly = true)
     public RecommendPostsResult recommend(RecommendPostsQuery query) {
         SearchExecution execution = executeSearch(
                 query.userId(),
@@ -256,7 +254,6 @@ public class HobbyRagApplicationService implements
     }
 
     @Override
-    @Transactional(readOnly = true)
     public HobbyRagBenchmarkResult run(HobbyRagBenchmarkQuery query) {
         int iterations = Math.max(1, query.iterations());
         List<String> benchmarkQueries = benchmarkQueries(query.hobbyId());

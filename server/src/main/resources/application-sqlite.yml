@@ -3,9 +3,9 @@ spring:
     url: jdbc:sqlite:./nazgul-rag.db
     driver-class-name: org.sqlite.JDBC
     hikari:
-      maximum-pool-size: 1
+      maximum-pool-size: 4
       minimum-idle: 1
-      connection-timeout: 30000
+      connection-timeout: 120000
 
   flyway:
     enabled: false
@@ -41,5 +41,7 @@ app:
 
 management:
   health:
+    db:
+      enabled: false
     redis:
       enabled: false
