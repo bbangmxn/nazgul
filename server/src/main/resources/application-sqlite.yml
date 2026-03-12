@@ -1,0 +1,51 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:./nazgul-rag.db
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      maximum-pool-size: 4
+      minimum-idle: 1
+      connection-timeout: 120000
+
+  flyway:
+    enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+
+  ai:
+    openai:
+      api-key: disabled-for-ollama
+    vectorstore:
+      type: none
+
+app:
+  optimization:
+    worker-enabled: false
+  rag:
+    seed-enabled: true
+    performance:
+      fast-mode: false
+      rerank-enabled: true
+      summary-enabled: true
+    ollama:
+      enabled: true
+      base-url: http://localhost:11434
+      chat-model: deepseek-r1:8b
+      embedding-model: nomic-embed-text:latest
+      timeout-ms: 60000
+
+management:
+  health:
+    db:
+      enabled: false
+    redis:
+      enabled: false
